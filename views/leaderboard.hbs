@@ -5,10 +5,10 @@
         .fistBoard {
             font-size: 1.4em;
         }
-        .rank {
+        .fistBoard .rank {
             width: 80px;
         }
-        .totalFists {
+        .fistBoard .totalFists {
             font-size: 1.44em;
         }
         .fistBoard .name span{
@@ -40,32 +40,26 @@
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td class="rank">
-                        1
-                    </td>
-                    <td class="name">
-                        <img style="width: 80px;" src="https://placekitten.com/200/200" alt="" class="circle">
-                        <span>@vinberts</span>
-                    </td>
-                    <td class="totalFists">10 &#9994;&#127998;</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
-                    <td class="name">
-                        <img style="width: 80px;" src="https://placekitten.com/80/80" alt="" class="circle">
-                        <span>@george</span>
-                    </td>
-                    <td class="totalFists">9 &#9994;&#127998;</td>
-                </tr>
-                <tr>
-                    <td class="rank">3</td>
-                    <td class="name">
-                        <img style="width: 80px;" src="https://placekitten.com/100/100" alt="" class="circle">
-                        <span>@Bob</span>
-                    </td>
-                    <td class="totalFists">7 &#9994;&#127998;</td>
-                </tr>
+                {{#each users}}
+                {{!-- only output if fist data exists --}}
+                    {{#if fists}}
+                        <tr>
+                            <td class="rank">
+                                {{math @index "+" 1}}
+                            </td>
+                            <td class="name">
+                            {{#if image}}
+                                <img src="{{image}}" alt="" class="circle">
+                            {{/if}}
+                                <span>{{name}}</span>
+                                {{#if aka}}
+                                    <span>&nbsp; aka {{aka}}</span>
+                                {{/if}}
+                            </td>
+                            <td class="totalFists center-align">{{fists}} &#9994;&#127998;</td>
+                        </tr>
+                    {{/if}}
+                {{/each}}
                 </tbody>
             </table>
 
