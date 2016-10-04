@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>{{title}}</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type='text/css' rel='stylesheet' href='/css/materialize.css' />
+    <link type='text/css' rel='stylesheet' href='/css/site.css' />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    {{{block "pageStyles"}}}
+</head>
+<body>
+<header class="header indigo z-depth-1">
+    <a href="/"><img src="/images/MikeDoormanCartoon.png" alt="" class="circle responsive-img"></a>
+
+    <h1>Doorman Mike</h1>
+    <h2><span>&#9994;&#127998;</span> Total Fist Rewards <span>&#9994;&#127998;</span></h2>
+
+
+    <nav class="indigo">
+        <div class="nav-wrapper">
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/leaderboard">leaderboard</a></li>
+                <li><a href="/rewards">rewards</a></li>
+                <li><a href="/about">about</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="/leaderboard">leaderboard</a></li>
+                <li><a href="/rewards">rewards</a></li>
+                <li><a href="/about">about</a></li>
+            </ul>
+        </div>
+    </nav>
+
+</header>
+
+
+{{{body}}}
+
+<footer class="indigo z-depth-1">
+    <div class="footer-copyright indigo darken-2">
+        <div class="container">
+            vinberts &#9994; &nbsp; &copy; {{{currentyear}}} - All Rights Reserved.
+        </div>
+    </div>
+</footer>
+
+{{> scripts}}
+
+</body>
+</html>
