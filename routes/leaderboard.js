@@ -1,17 +1,18 @@
 var _ = require('lodash');
 var express = require('express');
 var router = express.Router();
+var utils = require('../core/utils');
 
 /* GET leaderboard page. */
-router.get('/', function(req, res, next) {
+router.get('/', stormpath.getUser, function(req, res, next) {
     var usersRef = req.app.locals.firebase.database().ref('users');
 
     var returnedData = {};
     returnedData.title = 'Doorman Mike - Leaderboard';
 
-    getSlackUsers(req.app.locals.slack, function (slackUsers) {
+    utils.getSlackUsers(req.app.locals.slack, function (slackUsers) {
        if (slackUsers != null) {
-           getUsersForLeaderboard(usersRef, function (users) {
+           utils.getUsersFromFirebase(usersRef, function (users) {
                var userData = [];
                if (users != null) {
                    _.forEach(users, function (user) {
@@ -34,6 +35,19 @@ router.get('/', function(req, res, next) {
                            } else {
                                userObj.image = "http://placekitten.com/200/200";
                            }
+                           if (_.has(profile, 'email')) {
+                               userObj.email = profile.email;
+                               if (req.user) {
+                                   if (req.user.customData.slackID == slackUserObj.id) {
+                                       userObj.currentUser = 'yellow accent-1';
+                                   } else {
+                                       userObj.currentUser = false;
+                                   }
+                               }
+                           } else {
+                               userObj.email = '';
+                           }
+
                        }
                        if (_.has(user, 'fists')) {
                            userObj.fists = user.fists;
@@ -45,6 +59,8 @@ router.get('/', function(req, res, next) {
                    });
                    userData = _.orderBy(userData, ['fists'], ['desc']);
                    returnedData.users = userData;
+
+
 
                    res.render('leaderboard', returnedData);
 
@@ -60,26 +76,5 @@ router.get('/', function(req, res, next) {
 
 });
 
-function getUsersForLeaderboard(usersRef, callback) {
-    usersRef.once('value', function (snap) {
-        callback(snap.val());
-    }, function (err) {
-        // code to handle read error
-        console.log('error trying to retrieve users from fb', err);
-        callback(null);
-    });
-
-}
-
-function getSlackUsers (slackApi, callback) {
-    slackApi.api("users.list", function (err, res) {
-        if (res.members) {
-            callback(res.members);
-        } else {
-            console.log('error trying to retrieve users from slack', err);
-            callback(null);
-        }
-    });
-}
 
 module.exports = router;

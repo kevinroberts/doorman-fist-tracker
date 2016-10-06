@@ -43,7 +43,8 @@
                 {{#each users}}
                 {{!-- only output if fist data exists --}}
                     {{#if fists}}
-                        <tr>
+                            <tr class="{{currentUser}}">
+
                             <td class="rank">
                                 {{math @index "+" 1}}
                             </td>
@@ -55,6 +56,7 @@
                                 {{#if aka}}
                                     <span>&nbsp; aka {{aka}}</span>
                                 {{/if}}
+
                             </td>
                             <td class="totalFists center-align">{{fists}} &#9994;&#127998;</td>
                         </tr>

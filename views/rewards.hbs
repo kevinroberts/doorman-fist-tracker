@@ -1,6 +1,39 @@
 {{!< default}}
 
 <div class="container">
+    {{#if status}}
+        {{#if_eq status 'redeemed'}}
+            <div id="rewardConfirmation" class="row center-block center">
+                <div class="col s12 m12">
+                    <div class="card light-green">
+                        <div class="card-content text-accent-1">
+                            <span class="card-title">Reward Redeemed!</span>
+                            <p>Congratulations on redeeming your reward! keep it up!</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="rewardConfirmationBtn" href="#">Ok</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/if_eq}}
+        {{#if_eq status 'failedRedeem'}}
+            <div id="rewardConfirmation" class="row center-block center">
+                <div class="col s12 m12">
+                    <div class="card red">
+                        <div class="card-content text-accent-1">
+                            <span class="card-title">Redemption failed :O</span>
+                            <p>Doorman mike doesn't take kindly to fist abusers!</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="rewardConfirmationBtn" href="#">Ok</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/if_eq}}
+    {{/if}}
+
     <div class="row center">
         <div class="col s12 m12">
             <h2 class="header indigo-text lighten-1 section-title">
@@ -16,30 +49,22 @@
     <div class="row">
         <div class="col s12 m12">
             <ul class="collection">
-                <li class="collection-item avatar">
-                    <i class="circle green">25</i>
-                    <span class="title">25 Fists</span>
-                    <p>
-                        Mike will PM everyone on Slack saying how awesome you are.
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                </li>
-                <li class="collection-item avatar">
-                    <i class="circle orange">10</i>
-                    <span class="title">10 Fists</span>
-                    <p>
-                        Mike will give you virtual flowers everyday for a week.
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                </li>
-                <li class="collection-item avatar">
-                    <i class="circle red">5</i>
-                    <span class="title">5 Fists</span>
-                    <p>
-                        A Personal Mike shoutout saying how awesome you are.
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                </li>
+                {{#each rewards}}
+                    <li class="collection-item avatar">
+                        <i class="circle {{cssClass}}">{{totalFists}}</i>
+                        <span class="title">{{totalFists}} Fists</span>
+                        <p>
+                            {{description}}
+                        </p>
+                        <div style="margin-top: -25px;" class="right-align floating">
+                            {{#if enabled}}
+                                <a id="{{id}}" data-fists-needed="{{totalFists}}" class="waves-effect waves-light btn rewardBtn"><i class="material-icons right">cake</i>redeem</a>
+                            {{else}}
+                                <a id="{{id}}" data-fists-needed="{{totalFists}}" class="waves-light btn disabled tooltipped" data-position="left" data-delay="50" data-tooltip="You don't have enough fists (you have {{currentFists}})"><i class="material-icons right">cake</i>redeem</a>
+                            {{/if}}
+                        </div>
+                    </li>
+                {{/each}}
             </ul>
 
         </div>
