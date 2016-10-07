@@ -1,8 +1,11 @@
 var express = require('express');
 var _ = require('lodash');
 var router = express.Router();
-var Reward = require('../core/models/reward');
 var utils = require('../core/utils');
+var Reward = require('../core/models/reward');
+var Reward5 = require('../core/models/reward5');
+var Reward10 = require('../core/models/reward10');
+
 
 /* GET rewards page. */
 router.get('/', stormpath.loginRequired, function(req, res, next) {
@@ -79,20 +82,24 @@ router.post('/', stormpath.loginRequired, function (req, res) {
 
                     usersRef.update(firebase_update, function (response) {
                         var channel = 'general';
+                        var customText = '';
                         if (!req.app.locals.production) {
                             channel = 'private-testing';
                         }
+                        if (_.has(req.body, 'customText')) {
+                            customText = req.body.customText;
+                        }
+                        var reward5 = new Reward5(req.app.locals.slack, fireUser, channel, customText);
+
                         if (rewardId == 'reward5') {
-                            utils.postMessage(req.app.locals.slack, channel, utils.getLinkFromUserId(fireUser.id) +
-                                ' is an AMAZING :fist: person! You should pay more attention to him.');
+                            reward5.run();
                         }
                         if (rewardId == 'reward10') {
-                            utils.postMessage(req.app.locals.slack, channel, utils.getLinkFromUserId(fireUser.id) +
-                                ' is an AMAZING :fist: person! You should pay more attention to him.');
+                            var reward10 = new Reward10(req.app.locals.slack, fireUser, channel);
+                            reward10.run();
                         }
                         if (rewardId == 'reward25') {
-                            utils.postMessage(req.app.locals.slack, channel, utils.getLinkFromUserId(fireUser.id) +
-                                ' is an AMAZING :fist: person! You should pay more attention to him.');
+                            reward5.run();
                         }
 
                         res.redirect('/rewards?status=redeemed');

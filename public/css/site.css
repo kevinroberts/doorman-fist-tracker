@@ -65,6 +65,18 @@ footer .footer-copyright {
     color: #FAF9FD;
     padding: 10px 0;
 }
-.rewardConfirmationBtn {
-    color: #3e2723 !important;
+
+#card-alert button {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    font-size: 20px;
+    color: #fff;
+}
+#card-alert i {
+    font-size: 20px;
+    position: relative;
+    top: 2px;
 }

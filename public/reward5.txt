@@ -1,0 +1,7 @@
+<p>
+    This awesome reward can be customized with a promotional message of your choosing. Enter some text below if you'd like Mike to pimp something for you.
+</p>
+<div class="form-group">
+    <label>Your custom text</label>
+    <input autofocus type="text" id="input-shoutout" placeholder="" class="form-control">
+</div>
