@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 module.exports = {
 
     getUsersFromFirebase: function (usersRef, callback) {
@@ -12,7 +14,7 @@ module.exports = {
 
     getSlackUsers: function (slackApi, callback) {
         slackApi.api("users.list", function (err, res) {
-            if (res.members) {
+            if (_.has(res, 'members')) {
                 callback(res.members);
             } else {
                 console.log('error trying to retrieve users from slack', err);

@@ -1,4 +1,8 @@
 var _ = require('lodash');
+var CronJob = require('cron').CronJob;
+var Chance = require('chance'),
+    chance = new Chance();
+
 
 function Reward10(slackAPI, fireUser, channel) {
     // always initialize all instance properties
@@ -19,8 +23,62 @@ function Reward10(slackAPI, fireUser, channel) {
     ]
 }
 
+function getDefaultTz() {
+    var timezoneEnv = process.env.TIMEZONE;
+    if (timezoneEnv == null) {
+        return 'America/Chicago';
+    } else {
+        return timezoneEnv;
+    }
+}
+
 
 Reward10.prototype.run = function() {
+
+    var _this = this;
+
+    var dailyFlowerJob = new CronJob({
+        cronTime: '00 10 09 * * 1-5',
+        onTick: function() {
+            /*
+             * Runs every weekday (Monday through Friday)
+             * at 9:10:00 AM. It does not run on Saturday
+             * or Sunday.
+             */
+
+            var attachments = [
+                {   "color" : '#36a64f',
+                    "title": "Your Bouquet:",
+                    "fallback" : "Your gift of flowers for the day",
+                    "image_url" :  _.sample(_this.flowers)
+                }
+            ];
+
+            var attachmentString = JSON.stringify(attachments);
+
+            var payload;
+            payload = {
+                channel: _this.channel,
+                as_user : true,
+                text: "Your daily gift of flowers has arrived.",
+                attachments: attachmentString
+            };
+
+            _this.slackAPI.api('chat.postMessage', payload, function (err, res) {
+                console.log(res);
+            });
+        },
+        onComplete: function () {
+            if (chance.bool({likelihood: 30})) {
+                console.log('clearing daily flower job for user ' + _this.fireUser.id);
+                this.stop();
+
+            }
+
+        },
+        start: false,
+        timeZone: getDefaultTz()
+    });
 
     var attachments = [
         {   "color" : '#36a64f',
@@ -37,7 +95,7 @@ Reward10.prototype.run = function() {
 
     var payload;
     payload = {
-        channel: this.fireUser.id,
+        channel: this.channel,
         as_user : true,
         text: "Your daily gift of flowers has arrived.",
         attachments: attachmentString
@@ -47,6 +105,8 @@ Reward10.prototype.run = function() {
     this.slackAPI.api('chat.postMessage', payload, function (err, res) {
         console.log(res);
     });
+
+    dailyFlowerJob.start();
 
 };
 

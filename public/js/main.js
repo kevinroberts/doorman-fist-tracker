@@ -25,7 +25,7 @@ $( document ).ready(function() {
 
         var title = 'Are you sure';
         var content = 'Are you sure you want to cash in the ' + fistsNeeded + ' fists needed for this sweet reward?';
-        if (rewardId == 'reward5') {
+        if (rewardId == 'reward5' || rewardId == 'reward25') {
             title = 'Confirm redemption';
             content = 'url:reward5.txt'
         }
@@ -49,7 +49,7 @@ $( document ).ready(function() {
                 input2.name = "fistsNeeded";
                 input2.value = fistsNeeded;
                 form.appendChild(input2);
-                if (rewardId == 'reward5') {
+                if (rewardId == 'reward5' || rewardId == 'reward25') {
                     var customText = this.$b.find('input#input-shoutout');
                     if (customText.val() !== '') {
                         var input3 = document.createElement("input");

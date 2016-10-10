@@ -5,6 +5,7 @@ var utils = require('../core/utils');
 var Reward = require('../core/models/reward');
 var Reward5 = require('../core/models/reward5');
 var Reward10 = require('../core/models/reward10');
+var Reward25 = require('../core/models/reward25');
 
 
 /* GET rewards page. */
@@ -42,7 +43,6 @@ router.get('/', stormpath.loginRequired, function(req, res, next) {
         baseRewards.push(reward3);
 
         returnedData.rewards = baseRewards;
-
 
         res.render('rewards',  returnedData );
 
@@ -89,17 +89,18 @@ router.post('/', stormpath.loginRequired, function (req, res) {
                         if (_.has(req.body, 'customText')) {
                             customText = req.body.customText;
                         }
-                        var reward5 = new Reward5(req.app.locals.slack, fireUser, channel, customText);
 
                         if (rewardId == 'reward5') {
+                            var reward5 = new Reward5(req.app.locals.slack, fireUser, channel, customText);
                             reward5.run();
                         }
                         if (rewardId == 'reward10') {
-                            var reward10 = new Reward10(req.app.locals.slack, fireUser, channel);
+                            var reward10 = new Reward10(req.app.locals.slack, fireUser, fireUser.id);
                             reward10.run();
                         }
                         if (rewardId == 'reward25') {
-                            reward5.run();
+                            var reward25 = new Reward25(req.app.locals.slack, fireUser, customText);
+                            reward25.run();
                         }
 
                         res.redirect('/rewards?status=redeemed');
@@ -117,7 +118,6 @@ router.post('/', stormpath.loginRequired, function (req, res) {
     } else {
         res.redirect('/rewards?status=failedRedeem');
     }
-
 
 });
 
