@@ -14,7 +14,7 @@ Reward25.prototype.run = function() {
     utils.getSlackUsers(this.slackAPI, function (slackUsers) {
         if (slackUsers != null) {
             _.forEach(slackUsers, function (user) {
-                if (user.id != _this.fireUser.id) {
+                if (user.id != _this.fireUser.id && !user.is_bot) {
                     var userLink = utils.getLinkFromUserId(_this.fireUser.id);
 
                     var rewardMessage = ':fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5:\n' + userLink +
@@ -34,10 +34,11 @@ Reward25.prototype.run = function() {
     });
 
 
-    var selfMessage = ':fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5:\n' +
-        'Congrats on your big reward bro!! I just messaged all your friends about it!';
+    var selfMessage = ':fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5:\n\n' +
+        'Congrats on redeeming your 25 fists reward bro!! I just messaged all your friends about it!';
 
-    selfMessage += '\n:fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5:';
+    selfMessage += '\n\n:fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5::fist::skin-tone-5:';
+    selfMessage += '\n\n — Love :doorman: Mike';
 
     utils.postMessage(this.slackAPI, this.fireUser.id, selfMessage);
 
