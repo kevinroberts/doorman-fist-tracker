@@ -77,6 +77,9 @@ router.post('/', stormpath.loginRequired, function (req, res) {
                     // user has the fists!
                     // subtract the needed number
                     fireUser.fists = fists - fistsNeeded;
+                    if (rewardId == 'reward10') {
+                        fireUser.flowersToGive = 5;
+                    }
                     var firebase_update = {};
                     firebase_update[fireUser.id] = fireUser;
 
@@ -96,7 +99,9 @@ router.post('/', stormpath.loginRequired, function (req, res) {
                         }
                         if (rewardId == 'reward10') {
                             var reward10 = new Reward10(req.app.locals.slack, fireUser, fireUser.id);
-                            reward10.run();
+                            reward10.run(function(cb) {
+                                // optional run callback
+                            });
                         }
                         if (rewardId == 'reward25') {
                             var reward25 = new Reward25(req.app.locals.slack, fireUser, customText);
