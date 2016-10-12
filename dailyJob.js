@@ -1,7 +1,7 @@
 /*
 * This file should be added to the systems daily crontab
  */
-require('dotenv').config({silent: true});
+require('dotenv').config({silent: false});
 var Slack = require('slack-node');
 var firebase = require("firebase");
 var utils = require('./core/utils');
